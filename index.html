@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="stylesheet" href="main-css.css">
+    <title>TAGO_main</title>
+    <!-- 🌟 새롭게 추가된 CSS 스타일 🌟 -->
+    <style>
+        /* #TDS 섹션을 위한 스타일: 내부 요소의 absolute 위치 기준 */
+        #TDS {
+            position: relative; 
+            min-height: 80vh; /* 중앙 배치를 위해 최소 높이 확보 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding-bottom: 100px;
+        }
+
+        /* 나의 감상 원형 버튼 스타일 */
+        .impression-circle {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 65%; /* 중앙보다 약간 아래로 조정 */
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 160px; /* 적당한 크기 */
+            height: 160px;
+            background-color: black;
+            color: white;
+            border-radius: 50%;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-decoration: none;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6);
+            z-index: 5;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+        }
+
+        .impression-circle:hover {
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.9);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+        
+        /* 원형 확장 전환 오버레이 */
+        #circle-transition-overlay {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background-color: black;
+            border-radius: 50%;
+            opacity: 1;
+            transform: translate(-50%, -50%);
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        #circle-transition-overlay.expand {
+            /* 뷰포트의 대각선 길이를 커버할 만큼 충분히 크게 설정 */
+            width: 300vmax; 
+            height: 300vmax;
+            transition: width 0.8s cubic-bezier(0.5, 0, 0.5, 1), height 0.8s cubic-bezier(0.5, 0, 0.5, 1);
+        }
+        
+        /* 🌟 기존 섹션 박스들의 위치 재조정 (화면 끝에 붙도록 수정) 🌟 */
+        .elements-box {
+             top: 40%; 
+             right: 0%; /* 화면 오른쪽 끝에 붙임 */
+        }
+        
+        .flow-box {
+             top: 70%; 
+             left: 0%; /* 화면 왼쪽 끝에 붙임 */
+        }
+    </style>
+</head>
+<body>
+    <!-- 로고 영역 (sticky 제외) -->
+    <header>
+        <div class="header-top">
+            <a href="#ABOUT"><img class="logo" src="TAGO_logo.jpg" alt="타고로고"></a>
+        </div>
+        <hr>
+    </header>
+    
+    <!-- 네비게이션만 sticky -->
+    <nav>
+        <div class="nav-wrapper">
+            <div class="header-menu">
+                <a href="#ABOUT" class="active">ABOUT</a>
+                <a href="#HISTORY">HISTORY</a>
+                <a href="#TDS">2025:THE DRUM SHAMAN</a>
+            </div>
+        </div>
+    </nav>
+    </header>
+    <main>
+        <section id="ABOUT">
+            <h1>About TAGO</h1>
+            <!-- 화살표 넣기 -->
+            <h2>"두드려 세상을 밝힌다"</h2>
+            <p>타고는 창작활동을 통하여 세계에 우리 음악의 우수성을 알리는데 목적을 두고 있습니다.</p>
+            <p class="footprint1"><span class="highlight">2015년 서울시 전문예술단체로 지정</span></p>
+            <p class="footprint2"><span class="highlight">2016년~2017년에는 세계 최대 예술축제인 에든버러 프린지 페스티벌에 참가하여 최고의 평점 별 5개를 받는 성대한 결과</span>를 얻었으며</p>
+            <p class="footprint3"><span class="highlight">호주/뉴질랜드 WOMAD 페스티벌에 한국 최초 초청</span>을 받기도 하였습니다.</p>
+            <p>항상 새로운 것을 추구하고 대중들에게 재미와 신선함 그리고 흥겨운 음악을 들려주기 위하여 끊임없이 노력하는 그룹입니다.</p>
+        </section>
+        <hr>
+
+        <section id="HISTORY">
+    <h1 style="text-align: center; margin-bottom: 60px;">HISTORY</h1>
+    
+    <div class="history-container">
+        <div class="y15-card">
+            <div class="y15-head">2015</div>
+            <div class="y15-detail">
+                강남구립 무용단 상설공연 '말죽거리' 공연<br>
+                국악방송 음원 지원사업 녹음<br>
+                일본 니가타 '동양 3국의 춤' 공연<br>
+                싱가포르 독립 50주년 기념공연<br>
+                국립오페라단〈주몽〉협연
+            </div>
+        </div>
+
+        <div class="y16-card">
+            <div class="y16-head">2016</div>
+            <div class="y16-detail">
+                인도네시아 자카르타, 반둥 공연 (한국문화원)<br>
+                에딘버러 '프린지 페스티벌' 참가<br>
+                '세계민속춤 축제' 주최, 주관 및 오프닝 공연<br>
+                광화문 광장 '아리랑 페스티벌' 공연<br>
+                '신나는 국악여행' < 코리안 정글 > 공연
+            </div>
+        </div>
+
+        <div class="y17-card">
+            <div class="y17-head">2017</div>
+            <div class="y17-detail">
+                금나래아트홀 기획공연 'TAGO 코리안드럼'<br>
+                호주, 뉴질랜드 '워매들레이드 페스티벌' 초청공연<br>
+                Dom sindikata, Serbia 세르비아 초청공연<                루마니아 Sibiu '국제 연극 페스티벌' 초청공연<br>
+                런던 '코리아 페스티벌', 올림피아 극장 초청공연<br>
+                에딘버러 '프린지 페스티벌' assembly ballom hall (24회 공연)<br>
+                스페인 'La Merce 페스티벌' 초청공연
+            </div>
+        </div>
+
+        <div class="y18-card">
+            <div class="y18-head">2018</div>
+            <div class="y18-detail">
+                문래예술공장 "원스트링즈" 공연<br>
+                팔레스타인 인터네셔널 페스티벌 공연<br>
+                라트비아 독립 100주년 뮤직 페스티벌 공연<br>
+                피츠버그 페스티벌 "코리안드럼 타고" 공연<br>
+                금나래 아트홀 작은음악회 "타고 MAD" 공연
+            </div>
+        </div>
+
+        <div class="y19-card">
+            <div class="y19-head">2019</div>
+            <div class="y19-detail">
+                TAGO 'MAD' 정기공연 성수아트홀<br>
+                타고 '피쓰나이트' 해남문화예술회관 초청공연<br>
+                러시아-독일 Korean Festival 초청공연<br>
+                한·튀니지 수교 50주년 기념 초청공연<br>
+                청와대 신년회 타고 공연
+            </div>
+        </div>
+
+        <div class="y20-card">
+            <div class="y20-head">2020</div>
+            <div class="y20-detail">
+                'MBC 가요대제전' MONSTERX & 크래비티 & TAGO<br>
+                'MBN 나야나' 팔도명물가수 TAGO 김시원 출연<br>
+                광주예술고등학교 마스터 클래스<br>
+                동작문화재단 < 노들난장 ><br>
+                네덜란드 22개 도시 투어 < TAGO - Korean Drum Ⅱ ><br>
+                광주 국립아시아문화전당 < TAGO - Brunch Concert >
+            </div>
+        </div>
+
+        <div class="y21-card">
+            <div class="y21-head">2021</div>
+            <div class="y21-detail">
+                고수의콘서트 평화의 희망의 북을 울려라 화양연화 '인천서구문화회관'<br>
+                한국 카메룬 수교 60주년 기념 초청공연
+            </div>
+        </div>
+
+        <div class="y22-card">
+            <div class="y22-head">2022</div>
+            <div class="y22-detail">
+                한국 과테말라, 에콰도르, 파라과이 수교 60주년 기념 초청공연<br>
+                KF국제교류재단 주관 호주 캔버라, 멜버른 초청공연<br>
+                헝가리 국가거리민속축제 초청공연<br>
+                안성 남사당 바우덕이 축제 메인공연<br>
+                한국 아르헨티나 수교 60주년 한국문화원 단독 초청공연
+            </div>
+        </div>
+
+        <div class="y23-card">
+            <div class="y23-head">2023</div>
+            <div class="y23-detail">
+                Jecheon International Music & Film Festival 한국경쟁 부분 장편 후보 < 노크 ><br>
+                방방곡곡문화공감사업 성남아트리움 대극장 < TAGO MAD : Man and Drum ><br>
+                성남문화재단 기획공연 파크콘서트 < KoreanDrum : 영고 ><br>
+                한·미 동맹 70주년 기념 앵커리지 초청공연 < TAGO MAD : Man and Drum ><br>
+                타고 신작 정기공연 KoreanDrum III : The Drum Shaman 국립극장 하늘극장
+            </div>
+        </div>
+
+        <div class="y24-card">
+            <div class="y24-head">2024</div>
+            <div class="y24-detail">
+                KoreanDrum III : The Drum Shaman 부산 영화의전당 하늘연극장<br>
+                한국적 북춤의 추구와 세계화 PAF특별상 수상<br>
+                제천 벚꽃축제 메인공연
+            </div>
+        </div>
+
+        <div class="y25-card">
+            <div class="y25-head">2025</div>
+            <div class="y25-detail">
+                제7회 춘천시립예술단 정기공연 어버이날 "효"콘서트 초청공연<br>
+                제35회 마카오아트페스티벌 TheDrum Shaman 초청공연<br>
+                ROPPONGI ART FESTIVAL 공식 초청공연<br>
+                타고 정기공연 KoreanDrum III : The Drum Shaman 국립극장 하늘극장
+            </div>
+        </div>
+    </div>
+    
+    <!-- 2026 카드 별도 배치 -->
+    <div class="y26-card">
+        <div class="y26-head">2026</div>
+        <div class="y26-detail">Coming Soon...</div>
+    </div>
+</section>
+        <hr>
+        <section id="TDS">
+            <h1>2025 Performance</h1>
+            <h2>TAGO: THE DRUM SHAMNAN</h2>
+            
+            <!-- 나의 감상 원형 버튼 추가 -->
+            <a href="after.html" class="impression-circle" id="impression-link">
+                나의 감상
+            </a>
+            
+            <a href="elements.html" class="section-box elements-box">
+                <div>
+                    <h4 class="elements">공연구성요소</h4>
+                </div>
+            </a>
+        
+            <!-- 공연흐름 (왼쪽 고정) -->
+            <a href="flow.html" class="section-box flow-box">
+                <div>
+                    <h4 class="flow">공연흐름</h4>
+                </div>
+            </a>
+        </section>
+    </main>
+    <footer>
+        <!-- <div> <a href="https://www.instagram.com/tago_h/">인스타그램</a></div>
+        <div><a href="https://www.drumtago.com/">홈페이지</a></div>
+        <p>숙명여자대학교 2410562 인공지능공학부 임효주 제작</p>
+        <p>타고팀 앞으로의 행보에 응원을 보냅니다!</p> -->
+    </footer>
+    <!-- 페이지 전환을 위한 검은 원형 오버레이 -->
+    <div id="circle-transition-overlay"></div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+    // 1. 슬라이딩 인디케이터 생성 및 초기화
+    const headerMenu = document.querySelector('.header-menu');
+    const menuItems = document.querySelectorAll('.header-menu a');
+    
+    // 인디케이터 요소 생성
+    const indicator = document.createElement('div');
+    indicator.className = 'nav-indicator';
+    headerMenu.appendChild(indicator);
+    
+    // 인디케이터 위치 업데이트 함수
+    function updateIndicator(target) {
+        if (!target) return;
+        
+        const menuRect = headerMenu.getBoundingClientRect();
+        const targetRect = target.getBoundingClientRect();
+        
+        indicator.style.width = `${targetRect.width}px`;
+        indicator.style.left = `${targetRect.left - menuRect.left}px`;
+    }
+    
+    // 초기 active 항목으로 인디케이터 설정
+    setTimeout(() => {
+        const initialActive = document.querySelector('.header-menu a.active');
+        if (initialActive) {
+            updateIndicator(initialActive);
+        }
+    }, 100);
+    
+    // 2. 메뉴 클릭 이벤트
+    menuItems.forEach(item => {
+        item.addEventListener('click', function(e) {
+            e.preventDefault(); // 기본 동작 막기
+            
+            // 모든 active 클래스 제거
+            menuItems.forEach(menuItem => {
+                menuItem.classList.remove('active');
+            });
+            
+            // 클릭한 아이템에 active 클래스 추가
+            this.classList.add('active');
+            
+            // 인디케이터 이동
+            updateIndicator(this);
+            
+            // 해당 섹션으로 스크롤
+            const targetId = this.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            
+            if (targetSection) {
+                const headerOffset = 80;
+                const elementPosition = targetSection.getBoundingClientRect().top;
+                const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                
+                window.scrollTo({
+                    top: offsetPosition,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+    
+    // 3. 스크롤 시 네비게이션 글래스 효과
+    const nav = document.querySelector('nav');
+    
+    if (nav) {
+        window.addEventListener('scroll', function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            
+            if (scrollTop > 100) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+    }
+    
+    // 4. 스크롤 위치에 따른 active 메뉴 자동 변경
+    const sections = document.querySelectorAll('section[id]');
+    let isScrolling = false;
+    
+    function highlightMenu() {
+        // 클릭으로 스크롤 중이면 무시
+        if (isScrolling) return;
+        
+        const scrollY = window.pageYOffset;
+        
+        sections.forEach(section => {
+            const sectionHeight = section.offsetHeight;
+            const sectionTop = section.offsetTop - 150;
+            const sectionId = section.getAttribute('id');
+            const correspondingLink = document.querySelector(`.header-menu a[href="#${sectionId}"]`);
+            
+            if (scrollY > sectionTop && scrollY <= sectionTop + sectionHeight) {
+                // active 클래스가 이미 있으면 무시
+                if (correspondingLink && !correspondingLink.classList.contains('active')) {
+                    menuItems.forEach(item => item.classList.remove('active'));
+                    correspondingLink.classList.add('active');
+                    updateIndicator(correspondingLink);
+                }
+            }
+        });
+    }
+    
+    // 스크롤 이벤트 (디바운스 적용)
+    let scrollTimeout;
+    window.addEventListener('scroll', function() {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(highlightMenu, 100);
+    });
+    
+    // 5. 윈도우 리사이즈 시 인디케이터 위치 재조정
+    window.addEventListener('resize', function() {
+        const activeItem = document.querySelector('.header-menu a.active');
+        if (activeItem) {
+            updateIndicator(activeItem);
+        }
+    });
+    
+    // 6. 클릭 스크롤 플래그 관리
+    menuItems.forEach(item => {
+        item.addEventListener('click', function() {
+            isScrolling = true;
+            setTimeout(() => {
+                isScrolling = false;
+            }, 1000); // 스크롤 애니메이션 시간
+        });
+    });
+    
+    // 7. History 카드 스크롤 애니메이션 (2026 카드 포함)
+    const historyCards = document.querySelectorAll('[class^="y"][class$="-card"]');
+    
+    if (historyCards.length > 0) {
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px 0px -50px 0px',
+            threshold: 0.1
+        };
+        
+        const cardObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        // 모든 연도 카드 관찰 (2026 포함)
+        historyCards.forEach(card => {
+            cardObserver.observe(card);
+        });
+    }
+    
+    // 8. 페이지 로드 애니메이션 (기존 로직 유지)
+    window.addEventListener('load', function() {
+        const logo = document.querySelector('.logo');
+        const navWrapper = document.querySelector('.nav-wrapper');
+        
+        if (logo) {
+            logo.style.opacity = '0';
+            logo.style.transform = 'translateY(-20px)';
+            logo.style.transition = 'all 0.6s ease';
+            
+            setTimeout(() => {
+                logo.style.opacity = '1';
+                logo.style.transform = 'translateY(0)';
+            }, 100);
+        }
+        
+        if (navWrapper) {
+            navWrapper.style.opacity = '0';
+            navWrapper.style.transform = 'translateY(-20px)';
+            navWrapper.style.transition = 'all 0.6s ease 0.2s';
+            
+            setTimeout(() => {
+                navWrapper.style.opacity = '1';
+                navWrapper.style.transform = 'translateY(0)';
+            }, 200);
+        }
+    });
+
+    // 9. 기존 페이지 전환 함수 (Elements, Flow)
+    function smoothTransition(url, direction) {
+        // ... (기존 코드 유지) ...
+        const transition = document.createElement('div');
+        
+        if (direction === 'right') {
+            transition.className = 'page-transition-right';
+            document.querySelector('#TDS').style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+            document.querySelector('#TDS').style.transform = 'translateX(-100%)';
+        } else if (direction === 'left') {
+            transition.className = 'page-transition-left';
+            document.querySelector('#TDS').style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
+            document.querySelector('#TDS').style.transform = 'translateX(100%)';
+        }
+        
+        document.body.appendChild(transition);
+        
+        setTimeout(() => {
+            transition.classList.add('active');
+        }, 10);
+        
+        setTimeout(() => {
+            window.location.href = url;
+        }, 600);
+    }
+
+    // 10. 나의 감상 (Expanding Circle) 전환 로직 추가
+    const impressionLink = document.getElementById('impression-link');
+    const overlay = document.getElementById('circle-transition-overlay');
+    const circleTransitionDuration = 800; // 0.8s, matching CSS transition
+
+    if (impressionLink && overlay) {
+        impressionLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetUrl = impressionLink.href;
+
+            // 1. 확장 애니메이션 시작
+            overlay.classList.add('expand');
+            overlay.style.pointerEvents = 'auto'; 
+
+            // 2. 애니메이션이 끝난 후 페이지 이동
+            setTimeout(() => {
+                window.location.href = targetUrl;
+            }, circleTransitionDuration); 
+        });
+    }
+
+    // 11. 기존 링크 클릭 이벤트 처리
+    document.querySelector('.elements-box').addEventListener('click', function(e) {
+        e.preventDefault();
+        const url = this.getAttribute('href');
+        smoothTransition(url, 'right');
+    });
+
+    document.querySelector('.flow-box').addEventListener('click', function(e) {
+        e.preventDefault();
+        const url = this.getAttribute('href');
+        smoothTransition(url, 'left');
+    });
+
+    // 12. 슬라이드 애니메이션 정의 (기존 로직 유지)
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        @keyframes slideInLeft {
+            from {
+                transform: translateX(-100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+});
+    </script>
+</body>
+</html>

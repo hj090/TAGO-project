@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elements</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(180deg, #000000 0%, #0a0a0a 100%);
+            color: white;
+            font-family: 'Noto Sans KR', Arial, sans-serif;
+            padding: 20px;
+            min-height: 100vh;
+            position: relative; /* 오버레이 z-index 기준을 위해 추가 */
+        }
+        
+        /* 🌟 페이지 전환 오버레이 스타일 (수정됨: 왼쪽에서 오른쪽으로 슬라이드 인) 🌟 */
+        #transition-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            transform: translateX(-100%); /* 🌟 초기 위치: 화면 왼쪽 바깥으로 수정 🌟 */
+            z-index: 9999;
+        }
+
+        #transition-overlay.slide-in {
+            transform: translateX(0); /* 🌟 전환 위치: 오른쪽으로 이동하며 화면을 덮음 🌟 */
+            transition: transform 0.5s cubic-bezier(0.645, 0.045, 0.355, 1.000); /* 부드러운 애니메이션 곡선 */
+        }
+        /* ------------------------------------- */
+
+        /* Back arrow styling */
+        .back-arrow {
+            display: inline-block;
+            color: white;
+            text-decoration: none;
+            font-size: 28px;
+            margin: 20px 0 40px 20px;
+            transition: all 0.3s ease;
+            opacity: 0.8;
+            z-index: 10;
+            position: relative;
+        }
+        
+        .back-arrow:hover {
+            transform: translateX(-8px);
+            opacity: 1;
+        }
+        
+        /* Section title styling */
+        .section-header {
+            text-align: center;
+            margin: 80px 0 60px 0;
+            position: relative;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 300;
+            letter-spacing: 0.1em;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            background: linear-gradient(90deg, #ffffff 0%, #808080 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .section-header::after {
+            content: '';
+            display: block;
+            width: 150px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #666, transparent);
+            margin: 30px auto 0;
+        }
+        
+        /* Card container */
+        .card-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Card styling */
+        .content-card {
+            background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 100%);
+            border-radius: 20px;
+            padding: 0;
+            margin: 50px 0;
+            display: flex;
+            align-items: stretch;
+            min-height: 400px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        /* Scroll animation trigger */
+        .content-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Card hover effect */
+        .content-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        /* Right-aligned image layout */
+        .content-right {
+            flex-direction: row-reverse;
+        }
+        
+        /* Left-aligned image layout */
+        .content-left {
+            flex-direction: row;
+        }
+        
+        /* Image container */
+        .image-container {
+            flex: 0 0 45%;
+            position: relative;
+            overflow: hidden;
+            background: #000;
+            display: flex; /* Flex 컨테이너로 지정 */
+            justify-content: center; /* 수평 중앙 정렬 */
+            align-items: center;
+        }
+        
+        .content-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        
+        .content-card:hover img {
+            transform: scale(1.05);
+        }
+        
+        /* Text content styling */
+        .text-content {
+            flex: 1;
+            padding: 60px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .text-content::before {
+            content: '';
+            position: absolute;
+            top: 60px;
+            left: 60px;
+            width: 40px;
+            height: 2px;
+            background: linear-gradient(90deg, #666, transparent);
+        }
+        
+        .text-content p {
+            line-height: 2;
+            margin: 20px 0;
+            font-size: 1.05rem;
+            color: rgba(255, 255, 255, 0.85);
+            font-weight: 300;
+        }
+        
+        /* Fade in animation */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Responsive design */
+        @media (max-width: 968px) {
+            h1 {
+                font-size: 2rem;
+                letter-spacing: 0.2em;
+            }
+            
+            .content-card {
+                flex-direction: column !important;
+                min-height: auto;
+            }
+            
+            .image-container {
+                flex: none;
+                height: 300px;
+            }
+            
+            .text-content {
+                padding: 40px 30px;
+            }
+            
+            .text-content::before {
+                top: 40px;
+                left: 30px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.6rem;
+                letter-spacing: 0.1em;
+            }
+            
+            .text-content {
+                padding: 30px 20px;
+            }
+            
+            .text-content p {
+                font-size: 0.95rem;
+            }
+        }
+        .imp {
+            font-weight: 700;
+        }
+        .smaller {
+            max-width:250px;
+            max-height: 350px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Back arrow link -->
+    <a href="index.html" class="back-arrow">←</a>
+    
+    <div class="card-container">
+        <!-- 무대와 음악 섹션 -->
+        <div class="section-header">
+            <h1>무대와 음악</h1>
+        </div>
+        
+        <!-- 무당의상 카드 -->
+        <div class="content-card content-right">
+            <div class="image-container">
+                <img class="smaller" src="https://lh6.googleusercontent.com/proxy/fS-q1g3npQ9W-1-73SIbewpWo1yukqpTKcIIakM6yvO9Nh2VXS5MTPhKWuk-vIiHfcCBOY9cTBtI7nY5COpqq6p5mvWMKy32ZlCQjMsHSw8PhQ" alt="무당의상">
+            </div>
+            <div class="text-content">
+                <p>샤머니즘에서 무당은 하늘과 땅을 연결하는 자의 역할을 맡고 있다. 예로부터 무당은 춤사위와 굿판의 음악적인 요소로 하늘에 계신 신과의 소통을 도모했다.</p>
+            </div>
+        </div>
+        
+        <!-- 타고팀 카드 -->
+        <div class="content-card content-left">
+            <div class="image-container">
+                <img src="elements-1.png" alt="타고팀 공연사진1">
+            </div>
+            <div class="text-content">
+                <p>타고 팀의 공연에서는 북과 타악기 중심의 리듬이 <span class="imp">전통적인 의례적 분위기를 형성</span>하는데에 중심적인 역할을 했다. 이는 단순한 음악적 감상뿐만 아니라 <span class="imp">관객들까지 의례적 경험에 가까운 몰입에 이르게 했다는 점</span>에서 공연의 핵심 메세지인 '샤머니즘의 현대적 해석'을 관통하는 중추적인 요소였다.</p>
+            </div>
+        </div>
+        
+        <!-- 의상 섹션 -->
+        <div class="section-header" style="animation-delay: 0.2s;">
+            <h1>의상</h1>
+        </div>
+        
+        <!-- 무녀의상 카드 -->
+        <div class="content-card content-right">
+            <div class="image-container">
+                <img src="elements-2.png" alt="무녀의상">
+            </div>
+            <div class="text-content">
+                <p>전통적인 무복에서 착안해 상징적인 요소들을 조화롭게 배치한 것으로 보였다. 특히 무녀의 의상이 돋보였다. 얇은 소재의 천을 휘감아 입어 무녀가 움직일 때마다 부드럽게 찰랑거리며 신이라는 영적 존재의 흐름을 잘 나타냈다. 머리 위에는 깃털이라는 전통적인 장신구를 더해 시각적 화려함을 더했다.</p>
+                <p>이외에도 실제 무복의 구성요소 중 하나인 고깔을 머리 위에 써 주술적인 분위기를 더했다.</p>
+                <p>전체적으로 <span class="imp">의상이 공연의 주제인 샤머니즘을 시각적으로 재현하는 장치로 완벽히 기능했다는 점</span>에서 중요한 의미를 갖는다.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- 🌟 페이지 전환 오버레이 요소 🌟 -->
+    <div id="transition-overlay"></div>
+
+    <script>
+        // Scroll animation
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+        
+        // Observe all cards and handle page transition
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- Scroll Animation Setup ---
+            const cards = document.querySelectorAll('.content-card');
+            cards.forEach((card, index) => {
+                // Add staggered delay for animation
+                card.style.transitionDelay = `${index * 0.15}s`;
+                observer.observe(card);
+            });
+
+            // --- Page Transition Setup ---
+            const backArrow = document.querySelector('.back-arrow');
+            const overlay = document.getElementById('transition-overlay');
+            const transitionDuration = 500; // 0.5초 (CSS transition과 일치해야 함)
+
+            if (backArrow && overlay) {
+                backArrow.addEventListener('click', (e) => {
+                    // 기본 페이지 이동을 막음
+                    e.preventDefault(); 
+
+                    const targetUrl = backArrow.href;
+                    
+                    // 1. 흰색 오버레이를 슬라이드 인 시켜 화면을 덮음 (왼쪽 -> 오른쪽)
+                    overlay.classList.add('slide-in');
+
+                    // 2. 애니메이션이 끝난 후 페이지 이동
+                    setTimeout(() => {
+                        window.location.href = targetUrl;
+                    }, transitionDuration); 
+                });
+            }
+        });
+    </script>
+</body>
+</html>
